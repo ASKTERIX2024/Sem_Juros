@@ -9,9 +9,9 @@ workflows:
 
       ios_signing:
         certificates:
-         - SemJurosCert
+          - SemJurosCert
         provisioning_profiles:
-         - SemJurosBuild
+          - SemJurosBuild
 
       vars:
         XCODE_WORKSPACE: "Runner"
@@ -21,6 +21,16 @@ workflows:
     scripts:
       - name: Instalar dependências
         script: flutter pub get
+
+      - name: Instalar CocoaPods e gerar .xcworkspace
+        script: |
+          cd ios && pod install
+
+      - name: Verificar se o workspace existe
+        script: |
+          ls "$CM_BUILD_DIR/ios/$XCODE_WORKSPACE.xcworkspace" || {
+            echo "Workspace não encontrado!" && exit 1
+          }
 
       - name: Inicializar keychain
         script: keychain initialize
@@ -34,5 +44,5 @@ workflows:
       - name: Build IPA para distribuição ad-hoc
         script: |
           xcode-project build-ipa \
-            --workspace "$CM_BUILD_DIR/$XCODE_WORKSPACE.xcworkspace" \
+            --workspace "$CM_BUILD_DIR/ios/$XCODE_WORKSPACE.xcworkspace" \
             --scheme "$XCODE_SCHEME"
