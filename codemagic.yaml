@@ -7,13 +7,16 @@ workflows:
       xcode: latest
       cocoapods: default
 
-   code_signing:
+    ios_signing:
       certificates:
-        - certificate_reference_name: SemJurosCertificado
-          certificate_password: "sua_senha_aqui"
-      provisioning_profiles:
-        - name: SemJurosBuild
-          path: /Users/builder/Library/MobileDevice/Provisioning\ Profiles/SemJurosBuild.mobileprovision
+         - SemJurosCert
+       provisioning_profiles:
+         - SemJurosBuild
+
+    vars:
+       XCODE_WORKSPACE: "Runner"
+       XCODE_SCHEME: "Runner"
+       BUNDLE_ID: "com.abarei.semjuros"
 
     scripts:
       - name: Instalar dependências
