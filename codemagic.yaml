@@ -42,6 +42,9 @@ workflows:
       - name: Aplicar perfis no projeto
         script: xcode-project use-profiles
 
+      - name: Verificar perfis aplicados
+         script: xcode-project use-profiles --verbose
+
       - name: Adicionar ExportOptions.plist
         script: |
           cat <<EOF > $CM_BUILD_DIR/ios/export_options.plist
