@@ -1,36 +1,49 @@
 workflows:
   ios-ad-hoc-build:
-    name: iOS Ad-Hoc Workflow
+    name: iOS Ad-hoc Build
+    instance_type: mac_mini_m2
+    max_build_duration: 60
+
     environment:
-      flutter: stable
+      ios_signing:
+        certificates:
+          - SeuJurosBuild         # Reference Name do .p12 no Teams
+        provisioning_profiles:
+          - SemJurosBuild        # Reference Name do .mobileprovision no Teams
+
+      vars:
+        XCODE_WORKSPACE: "Runner"
+        XCODE_SCHEME: "Runner"
+        BUNDLE_ID: "com.abarei.semjuros"
+
       xcode: latest
       cocoapods: default
-      vars:
-        CERTIFICATE_PASSWORD: kSNAYlaA
+
     scripts:
       - name: Instalar dependências
         script: |
-          flutter pub get
+          pod install
 
-      - name: Importar certificado P12
+      - name: Inicializar keychain
         script: |
-          security create-keychain -p "codemagic" build.keychain
-          security import semjurosbuild.p12 -k build.keychain -P $CERTIFICATE_PASSWORD -A
-          security list-keychains -s build.keychain
-          security default-keychain -s build.keychain
-          security unlock-keychain -p "codemagic" build.keychain
+          keychain initialize
 
-      - name: Build IPA para Ad-Hoc
+      - name: Adicionar certificados
         script: |
-          flutter build ipa --export-method ad-hoc
+          keychain add-certificates
+
+      - name: Aplicar perfis no projeto
+        script: |
+          xcode-project use-profiles
+
+      - name: Build IPA para distribuição ad-hoc
+        script: |
+          xcode-project build-ipa \
+            --workspace "$CM_BUILD_DIR/$XCODE_WORKSPACE.xcworkspace" \
+            --scheme "$XCODE_SCHEME"
 
     artifacts:
       - build/ios/ipa/*.ipa
-
-    publishing:
-      email:
-        recipients:
-          - alberto@abarei.com
-        notify:
-          success: true
-          failure: true
+      - /tmp/xcodebuild_logs/*.log
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
+      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
