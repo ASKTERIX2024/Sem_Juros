@@ -7,7 +7,7 @@ workflows:
     environment:
       ios_signing:
         certificates:
-          - SeuJurosBuild         # Reference Name do .p12 no Teams
+          - SemJurosBuild         # Reference Name do .p12 no Teams
         provisioning_profiles:
           - SemJurosBuild        # Reference Name do .mobileprovision no Teams
 
