@@ -43,7 +43,7 @@ workflows:
         script: xcode-project use-profiles
 
       - name: Verificar perfis aplicados
-         script: xcode-project use-profiles --verbose
+        script: xcode-project use-profiles --verbose
 
       - name: Adicionar ExportOptions.plist
         script: |
