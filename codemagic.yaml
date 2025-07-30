@@ -11,11 +11,6 @@ workflows:
       - name: Instalar dependências
         script: flutter pub get
 
-      - name: Instalar pods
-        script: |
-          echo "📦 Instalando CocoaPods..."
-          pod install || { echo "❌ Falha no pod install"; exit 1; }
-
       - name: Inicializar keychain
         script: keychain initialize
 
