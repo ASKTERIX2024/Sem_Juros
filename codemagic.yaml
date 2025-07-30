@@ -1,49 +1,32 @@
 workflows:
-  ios-ad-hoc-build:
-    name: iOS Ad-hoc Build
+  ios-build:
+    name: iOS Build Ad-Hoc
     instance_type: mac_mini_m2
-    max_build_duration: 60
-
     environment:
-      ios_signing:
-        certificates:
-          - SemJurosBuild         # Reference Name do .p12 no Teams
-        provisioning_profiles:
-          - SemJurosBuild        # Reference Name do .mobileprovision no Teams
-
-      vars:
-        XCODE_WORKSPACE: "Runner"
-        XCODE_SCHEME: "Runner"
-        BUNDLE_ID: "com.abarei.semjuros"
-
+      flutter: stable
       xcode: latest
       cocoapods: default
 
     scripts:
       - name: Instalar dependências
+        script: flutter pub get
+
+      - name: Instalar pods
         script: |
-          pod install
+          echo "📦 Instalando CocoaPods..."
+          pod install || { echo "❌ Falha no pod install"; exit 1; }
 
       - name: Inicializar keychain
-        script: |
-          keychain initialize
+        script: keychain initialize
 
       - name: Adicionar certificados
-        script: |
-          keychain add-certificates
+        script: keychain add-certificates
 
       - name: Aplicar perfis no projeto
-        script: |
-          xcode-project use-profiles
+        script: xcode-project use-profiles
 
       - name: Build IPA para distribuição ad-hoc
         script: |
           xcode-project build-ipa \
             --workspace "$CM_BUILD_DIR/$XCODE_WORKSPACE.xcworkspace" \
             --scheme "$XCODE_SCHEME"
-
-    artifacts:
-      - build/ios/ipa/*.ipa
-      - /tmp/xcodebuild_logs/*.log
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.app
-      - $HOME/Library/Developer/Xcode/DerivedData/**/Build/**/*.dSYM
