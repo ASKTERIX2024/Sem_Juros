@@ -15,7 +15,7 @@ workflows:
           - SemJurosBuild
 
       vars:
-        CERT_PASSWORD: kSNAYlaA
+        CERT_PASSWORD: I74sbHRX
         XCODE_WORKSPACE: "Runner"
         XCODE_SCHEME: "Runner"
         BUNDLE_ID: "com.abarei.semjuros"
