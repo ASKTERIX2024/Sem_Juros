@@ -70,7 +70,7 @@ workflows:
           EOF
 
        - name: Build IPA usando comando simplificado
-          script: |
+         script: |
              set -eo pipefail
              xcodebuild \
                -workspace "ios/Runner.xcworkspace" \
