@@ -10,16 +10,15 @@ workflows:
 
       ios_signing:
         certificates:
-        - SemJurosCert
+          - SemJurosCert
         provisioning_profiles:
-        - SemJurosBuild
+          - SemJurosBuild
 
       vars:
         CERT_PASSWORD: kSNAYlaA
         XCODE_WORKSPACE: "Runner"
         XCODE_SCHEME: "Runner"
         BUNDLE_ID: "com.abarei.semjuros"
-
 
     scripts:
       - name: Instalar dependências
@@ -39,8 +38,7 @@ workflows:
         script: keychain initialize
 
       - name: Adicionar certificados manualmente
-        script: |
-          keychain add-certificates 
+        script: keychain add-certificates
 
       - name: Adicionar ExportOptions.plist
         script: |
@@ -86,12 +84,8 @@ workflows:
       
           xcodebuild -exportArchive \
             -archivePath build/Runner.xcarchive \
-            -exportOptionsPlist ios/exportOptions.plist \
+            -exportOptionsPlist ios/export_options.plist \
             -exportPath build/ipa
 
-      - name: Build IPA para distribuição ad-hoc
-        script: |
-          xcode-project build-ipa --verbose \
-            --workspace "$CM_BUILD_DIR/ios/$XCODE_WORKSPACE.xcworkspace" \
-            --scheme "$XCODE_SCHEME" \
-            --export-options-plist $CM_BUILD_DIR/ios/export_options.plist
+artifacts:
+  - build/ipa/*.ipa
