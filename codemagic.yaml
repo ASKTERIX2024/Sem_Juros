@@ -40,11 +40,11 @@ workflows:
       - name: Adicionar certificados manualmente
         script: keychain add-certificates
 
-      - name: Adicionar ExportOptions.plist
+      - name: Gerar ExportOptions.plist
         script: |
           cat <<EOF > $CM_BUILD_DIR/ios/export_options.plist
           <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
           "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
             <dict>
@@ -65,27 +65,12 @@ workflows:
           </plist>
           EOF
 
-      - name: Archive Runner Manual
+      - name: Build IPA usando comando simplificado
         script: |
-          xcodebuild clean \
-            -workspace ios/Runner.xcworkspace \
-            -scheme Runner \
-            -configuration Release
-      
-          xcodebuild archive \
-            -workspace ios/Runner.xcworkspace \
-            -scheme Runner \
-            -configuration Release \
-            -archivePath build/Runner.xcarchive \
-            CODE_SIGN_STYLE=Manual \
-            CODE_SIGN_IDENTITY="Apple Distribution" \
-            DEVELOPMENT_TEAM=V42F9XV6FV \
-            PROVISIONING_PROFILE_SPECIFIER="SemJurosBuild"
-      
-          xcodebuild -exportArchive \
-            -archivePath build/Runner.xcarchive \
-            -exportOptionsPlist ios/export_options.plist \
-            -exportPath build/ipa
+          xcode-project build-ipa \
+            --workspace "ios/Runner.xcworkspace" \
+            --scheme "Runner" \
+            --export-options-plist ios/export_options.plist
 
 artifacts:
-  - build/ipa/*.ipa
+  - build/ios/ipa/*.ipa
