@@ -69,7 +69,7 @@ workflows:
           </plist>
           EOF
 
-       -- name: Build IPA usando comando simplificado
+       - name: Build IPA usando comando simplificado
           script: |
              set -eo pipefail
              xcodebuild \
@@ -81,7 +81,7 @@ workflows:
                CODE_SIGN_STYLE=Manual \
                | tee xcodebuild.log
                
-         - name: Mostrar log do XcodeBuild
+       - name: Mostrar log do XcodeBuild
            script: cat xcodebuild.log
 
 
