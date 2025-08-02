@@ -3,7 +3,7 @@ workflows:
     name: iOS Build Ad-Hoc
     instance_type: mac_mini_m2
 
-   environment:
+    environment:
       flutter: stable
       xcode: latest
       cocoapods: default
