@@ -10,7 +10,8 @@ workflows:
 
       ios_signing:
         certificates:
-          - SemJurosCert
+          - certificate_name: SemJurosCert
+            certificate_password: kSNAYlaA
         provisioning_profiles:
           - SemJurosBuild
 
@@ -36,20 +37,18 @@ workflows:
       - name: Inicializar keychain
         script: keychain initialize
 
-      - name: Adicionar certificados
-        script: keychain add-certificates
-
-      - name: Aplicar perfis no projeto
-        script: xcode-project use-profiles
-
-      - name: Verificar perfis aplicados
-        script: xcode-project use-profiles --verbose
+      - name: Adicionar certificados manualmente
+        script: |
+          keychain add-certificates \
+            --certificate-name SemJurosCert \
+            --certificate-password 
 
       - name: Adicionar ExportOptions.plist
         script: |
           cat <<EOF > $CM_BUILD_DIR/ios/export_options.plist
           <?xml version="1.0" encoding="UTF-8"?>
-          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+          <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" 
+          "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
           <plist version="1.0">
             <dict>
               <key>method</key>
@@ -69,10 +68,31 @@ workflows:
           </plist>
           EOF
 
+      - name: Archive Runner Manual
+        script: |
+          xcodebuild clean \
+            -workspace ios/Runner.xcworkspace \
+            -scheme Runner \
+            -configuration Release
+      
+          xcodebuild archive \
+            -workspace ios/Runner.xcworkspace \
+            -scheme Runner \
+            -configuration Release \
+            -archivePath build/Runner.xcarchive \
+            CODE_SIGN_STYLE=Manual \
+            CODE_SIGN_IDENTITY="Apple Distribution" \
+            DEVELOPMENT_TEAM=V42F9XV6FV \
+            PROVISIONING_PROFILE_SPECIFIER="SemJurosBuild"
+      
+          xcodebuild -exportArchive \
+            -archivePath build/Runner.xcarchive \
+            -exportOptionsPlist ios/exportOptions.plist \
+            -exportPath build/ipa
+
       - name: Build IPA para distribuição ad-hoc
         script: |
-          xcode-project build-ipa \
+          xcode-project build-ipa --verbose \
             --workspace "$CM_BUILD_DIR/ios/$XCODE_WORKSPACE.xcworkspace" \
             --scheme "$XCODE_SCHEME" \
             --export-options-plist $CM_BUILD_DIR/ios/export_options.plist
-
