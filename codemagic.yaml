@@ -24,6 +24,11 @@ workflows:
       - name: Instalar dependências
         script: flutter pub get
 
+      - name: Print Generated.xcconfig
+        script: |
+          cat ios/Flutter/Generated.xcconfig || echo "Arquivo não encontrado"
+
+      
       - name: Instalar CocoaPods e gerar .xcworkspace
         script: |
           cd ios && pod install
