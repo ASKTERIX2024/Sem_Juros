@@ -3,14 +3,7 @@ workflows:
     name: iOS Build Ad-Hoc
     instance_type: mac_mini_m2
 
-    signing:
-      ios:
-        distribution_certificate: SemJurosCert
-        certificate_password: $CERT_PASSWORD
-        provisioning_profile: SemJurosBuild
-        code_signing_identity: "Apple Distribution"
-        team_id: V42F9XV6FV
-    environment:
+   environment:
       flutter: stable
       xcode: latest
       cocoapods: default
@@ -29,7 +22,15 @@ workflows:
         script: |
           cat ios/Flutter/Generated.xcconfig || echo "Arquivo não encontrado"
 
-      
+      - name: Importar certificado e perfil
+        script: |
+          # Importar certificado
+          keychain add-certificates --certificate ios/semjuroscert.p12 --certificate-password $CERT_PASSWORD
+    
+          # Importar o provisioning profile
+          mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
+          cp ios/SemJurosBuild.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
+            
       - name: Instalar CocoaPods e gerar .xcworkspace
         script: |
           cd ios && pod install
