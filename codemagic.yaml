@@ -1,12 +1,12 @@
 workflows:
    ios-build:
-    name: iOS Build Ad-Hoc
-    instance_type: mac_mini_m2
+       name: iOS Build Ad-Hoc
+       instance_type: mac_mini_m2
 
    environment:
-    flutter: stable
-    xcode: latest
-    cocoapods: default
+       flutter: stable
+       xcode: latest
+       cocoapods: default
 
     vars:
         CERT_PASSWORD: I74sbHRX
