@@ -14,16 +14,16 @@ workflows:
               XCODE_SCHEME: "Runner"
               BUNDLE_ID: "com.abarei.semjuros"
 
-   scripts:
-      - name: Instalar dependências
-        script: flutter pub get
+       scripts:
+       - name: Instalar dependências
+         script: flutter pub get
 
-      - name: Print Generated.xcconfig
-        script: |
+       - name: Print Generated.xcconfig
+         script: |
           cat ios/Flutter/Generated.xcconfig || echo "Arquivo não encontrado"
 
-      - name: Importar certificado e perfil
-        script: |
+       - name: Importar certificado e perfil
+         script: |
           # Importar certificado
           keychain add-certificates --certificate ios/semjuroscert.p12 --certificate-password $CERT_PASSWORD
     
@@ -31,21 +31,21 @@ workflows:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp ios/SemJurosBuild.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
             
-      - name: Instalar CocoaPods e gerar .xcworkspace
-        script: |
-          cd ios && pod install
+       - name: Instalar CocoaPods e gerar .xcworkspace
+         script: |
+           cd ios && pod install
 
-      - name: Verificar se o workspace existe
-        script: |
+       - name: Verificar se o workspace existe
+         script: |
           ls "$CM_BUILD_DIR/ios/$XCODE_WORKSPACE.xcworkspace" || {
             echo "Workspace não encontrado!" && exit 1
           }
 
-      - name: Inicializar keychain
-        script: keychain initialize
+       - name: Inicializar keychain
+         script: keychain initialize
 
-      - name: Gerar ExportOptions.plist
-        script: |
+       - name: Gerar ExportOptions.plist
+         script: |
           cat <<EOF > $CM_BUILD_DIR/ios/export_options.plist
           <?xml version="1.0" encoding="UTF-8"?>
           <!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN"
@@ -69,8 +69,8 @@ workflows:
           </plist>
           EOF
 
-      - name: Build IPA usando comando simplificado
-        script: |
+       - name: Build IPA usando comando simplificado
+         script: |
           xcode-project build-ipa \
             --workspace "ios/Runner.xcworkspace" \
             --scheme "Runner" \
@@ -80,3 +80,4 @@ workflows:
 
 artifacts:
   - build/ios/ipa/*.ipa
+
