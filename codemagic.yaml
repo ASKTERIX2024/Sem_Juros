@@ -10,8 +10,6 @@ workflows:
 
       vars:
         CERT_PASSWORD: I74sbHRX
-        vars:
-        CERT_PASSWORD: I74sbHRX
         P12_BASE64: |
           MIIMEwIBAzCCC9kGCSqGSIb3DQEHAaCCC8oEggvGMIILwjCCBngGCSqGSIb3DQEHBqCCBmkwggZl
           AgEAMIIGXgYJKoZIhvcNAQcBMB0GCiqGSIb3DQEMAQMwDwQIYMuCQb9ThLsCAwDDUICCBjD2sQdU
