@@ -69,12 +69,20 @@ workflows:
           </plist>
           EOF
 
-       - name: Build IPA usando comando simplificado
-         script: |
-          xcode-project build-ipa \
-            --workspace "ios/Runner.xcworkspace" \
-            --scheme "Runner" \
-            --export-options-plist ios/export_options.plist
+       -- name: Build IPA usando comando simplificado
+          script: |
+             set -eo pipefail
+             xcodebuild \
+               -workspace "ios/Runner.xcworkspace" \
+               -scheme "Runner" \
+               -archivePath "$CM_BUILD_DIR/ios/Runner.xcarchive" \
+               archive \
+               CODE_SIGN_IDENTITY="Apple Distribution" \
+               CODE_SIGN_STYLE=Manual \
+               | tee xcodebuild.log
+               
+         - name: Mostrar log do XcodeBuild
+           script: cat xcodebuild.log
 
 
 
