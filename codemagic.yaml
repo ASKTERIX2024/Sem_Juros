@@ -1,20 +1,20 @@
 workflows:
-  ios-build:
+   ios-build:
     name: iOS Build Ad-Hoc
     instance_type: mac_mini_m2
 
-    environment:
-      flutter: stable
-      xcode: latest
-      cocoapods: default
+   environment:
+    flutter: stable
+    xcode: latest
+    cocoapods: default
 
-      vars:
+    vars:
         CERT_PASSWORD: I74sbHRX
         XCODE_WORKSPACE: "Runner"
         XCODE_SCHEME: "Runner"
         BUNDLE_ID: "com.abarei.semjuros"
 
-    scripts:
+   scripts:
       - name: Instalar dependências
         script: flutter pub get
 
