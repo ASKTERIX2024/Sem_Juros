@@ -40,9 +40,7 @@ workflows:
 
       - name: Adicionar certificados manualmente
         script: |
-          keychain add-certificates \
-          --certificate-name SemJurosCert \
-          --certificate-password $CERT_PASSWORD
+          keychain add-certificates 
 
       - name: Adicionar ExportOptions.plist
         script: |
