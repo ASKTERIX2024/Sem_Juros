@@ -10,10 +10,9 @@ workflows:
 
       ios_signing:
         certificates:
-          - certificate_name: SemJurosCert
-            certificate_password: kSNAYlaA
+        - SemJurosCert:kSNAYlaA
         provisioning_profiles:
-          - SemJurosBuild
+        - SemJurosBuild
 
       vars:
         XCODE_WORKSPACE: "Runner"
