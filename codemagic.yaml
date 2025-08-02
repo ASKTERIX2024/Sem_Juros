@@ -10,12 +10,12 @@ workflows:
 
       ios_signing:
         certificates:
-        - SemJurosCert: kSNAYlaA
+        - SemJurosCert
         provisioning_profiles:
         - SemJurosBuild
 
       vars:
-        CERT_PASSWORD: "sua_senha_do_certificado"
+        CERT_PASSWORD: kSNAYlaA
         XCODE_WORKSPACE: "Runner"
         XCODE_SCHEME: "Runner"
         BUNDLE_ID: "com.abarei.semjuros"
