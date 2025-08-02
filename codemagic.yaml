@@ -82,7 +82,7 @@ workflows:
                | tee xcodebuild.log
                
        - name: Mostrar log do XcodeBuild
-           script: cat xcodebuild.log
+         script: cat xcodebuild.log
 
 
 
