@@ -15,9 +15,11 @@ workflows:
         - SemJurosBuild
 
       vars:
+        CERT_PASSWORD: "sua_senha_do_certificado"
         XCODE_WORKSPACE: "Runner"
         XCODE_SCHEME: "Runner"
         BUNDLE_ID: "com.abarei.semjuros"
+
 
     scripts:
       - name: Instalar dependências
@@ -39,8 +41,8 @@ workflows:
       - name: Adicionar certificados manualmente
         script: |
           keychain add-certificates \
-            --certificate-name SemJurosCert \
-            --certificate-password 
+          --certificate-name SemJurosCert \
+          --certificate-password $CERT_PASSWORD
 
       - name: Adicionar ExportOptions.plist
         script: |
