@@ -10,7 +10,7 @@ workflows:
 
       ios_signing:
         certificates:
-        - SemJurosCert:kSNAYlaA
+        - SemJurosCert: kSNAYlaA
         provisioning_profiles:
         - SemJurosBuild
 
