@@ -145,8 +145,7 @@ workflows:
           echo $PROVISIONING_PROFILE_BASE64 | base64 --decode > /tmp/profile.mobileprovision
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp /tmp/profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
-
-    scripts:
+   
       - name: Ajustar plataforma iOS e instalar CocoaPods
         script: |
           cd ios
@@ -155,6 +154,7 @@ workflows:
             grep -q "^platform :ios" Podfile || echo "platform :ios, '13.0'" >> Podfile
           fi
           pod install
+     
       - name: Verificar se o workspace existe
         script: |
           ls "$CM_BUILD_DIR/ios/$XCODE_WORKSPACE.xcworkspace" || {
