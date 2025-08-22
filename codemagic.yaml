@@ -142,9 +142,9 @@ workflows:
           keychain add-certificates --certificate /tmp/semjuroscert.p12 --certificate-password $CERT_PASSWORD
 
           # Restaurar perfil de provisionamento
-          echo $PROVISIONING_PROFILE_BASE64 | base64 --decode > /tmp/profile.mobileprovision
+          echo $PROVISIONING_PROFILE_BASE64 | base64 --decode > /tmp/SemJurosBuild.mobileprovision
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
-          cp /tmp/profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
+          cp /tmp/SemJurosBuild.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
    
       - name: Ajustar plataforma iOS e instalar CocoaPods
         script: |
