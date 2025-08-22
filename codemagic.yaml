@@ -146,10 +146,15 @@ workflows:
           mkdir -p ~/Library/MobileDevice/Provisioning\ Profiles
           cp /tmp/profile.mobileprovision ~/Library/MobileDevice/Provisioning\ Profiles/
 
-      - name: Instalar CocoaPods e gerar .xcworkspace
+    scripts:
+      - name: Ajustar plataforma iOS e instalar CocoaPods
         script: |
-          cd ios && pod install
-
+          cd ios
+          if [ -f "Podfile" ]; then
+            # Adiciona a linha se não existir
+            grep -q "^platform :ios" Podfile || echo "platform :ios, '13.0'" >> Podfile
+          fi
+          pod install
       - name: Verificar se o workspace existe
         script: |
           ls "$CM_BUILD_DIR/ios/$XCODE_WORKSPACE.xcworkspace" || {
